@@ -1,3 +1,11 @@
+# Mini Project(Health Dataset): Pima Indians Diabetes Dataset
+Dataset: [Diabetes dataset CSV](https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv)
+
+**Columns: ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigree', 'Age', 'Outcome']**
+
+**Objective:** Explore the dataset using descriptive statistics and basic visualizations to understand health patterns.
+
+
 # Pima Diabetes Descriptive Statistics Assignment – Student Guide
 
 Part 1: Load and Inspect Data
