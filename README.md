@@ -18,7 +18,7 @@ Part 2: Summary Statistics
     - Compute mean, median, min, max, range, standard deviation, variance.
     - Observations: 
         - Which features vary the most (largest std/variance)?
-        - Any surprising min or max values?.
+        - Any surprising min or max values?
 
 Part 3: Distribution & Visualization
 - Histograms & KDE: 
@@ -38,3 +38,5 @@ Part 5: Outliers
 - Use the IQR method or boxplots.
 
 - Observation: Which extreme values might affect the mean and standard deviation?
+
+Part 6: Apply Data Cleaning Strategy Based on Insights
