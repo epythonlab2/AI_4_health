@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus: AI for Healthcare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+        .sidebar-link {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+            font-weight: 700;
+        }
+        .sidebar-link.active::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 3px;
+            background-color: #2563eb;
+            border-radius: 4px 0 0 4px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+        .check-item::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: #dbeafe;
+            color: #2563eb;
+            border-radius: 50%;
+            margin-right: 1rem;
+            font-size: 0.875rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        /* Interactive Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, #2563eb, #60a5fa);
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Accordion Styles */
+        .week-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+            opacity: 0;
+        }
+        .week-item.active .week-content {
+            max-height: 1200px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+        .chevron-icon {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .week-item.active .chevron-icon {
+            transform: rotate(180deg);
+        }
+        .week-item.active .week-header {
+            background-color: #f8fafc;
+        }
+
+        @media print {
+            .no-print { display: none; }
+            .print-full { width: 100% !important; margin: 0 !important; }
+            .week-content { max-height: none !important; opacity: 1 !important; margin-top: 1.5rem !important; }
+            .chevron-icon { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 leading-relaxed">
+
+    <!-- Scroll Progress Indicator -->
+    <div id="scroll-progress" class="no-print"></div>
+
+    <!-- Header Navigation (Mobile) -->
+    <header class="lg:hidden bg-white/80 backdrop-blur-md border-b p-4 flex justify-between items-center sticky top-0 z-50">
+        <h1 class="font-bold text-blue-900 text-lg serif-title">AI for Healthcare</h1>
+        <button onclick="toggleMobileMenu()" class="p-2 text-slate-600 active:scale-95 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+    </header>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="no-print hidden lg:flex flex-col w-72 bg-white border-r border-slate-200 sticky h-screen top-0 overflow-hidden p-8">
+            <div class="mb-10">
+                <div class="h-12 w-12 bg-blue-600 rounded-xl flex items-center justify-center mb-4 text-white shadow-lg shadow-blue-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                </div>
+                <h2 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-1">Course Guide</h2>
+                <p id="reading-status" class="text-xs text-blue-500 font-medium">Currently: Overview</p>
+            </div>
+            
+            <nav class="space-y-1 flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                <a href="#overview" class="sidebar-link active flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600">Overview</a>
+                <a href="#objectives" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600">Objectives</a>
+                <a href="#accreditation" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600">Accreditation</a>
+                <a href="#lesson-plan" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600">Weekly Plan</a>
+                <a href="#datasets" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600">Dataset Roadmap</a>
+                <a href="#readings" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600">Readings</a>
+            </nav>
+
+            <div class="mt-8 pt-8 border-t border-slate-100">
+                <button onclick="window.print()" class="w-full bg-slate-900 text-white text-sm font-semibold py-3 px-4 rounded-xl hover:bg-slate-800 transition shadow-lg shadow-slate-200 active:scale-[0.98]">
+                    Export to PDF
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 lg:p-16 max-w-5xl mx-auto print-full">
+            
+            <!-- Hero Section -->
+            <section id="overview" class="mb-20 pt-8 scroll-mt-24">
+                <div class="flex items-center space-x-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em] mb-6">
+                    <span class="bg-blue-600 text-white px-2 py-0.5 rounded">CORE</span>
+                    <span>Curriculum Overview</span>
+                </div>
+                <h1 class="serif-title text-5xl lg:text-8xl text-slate-900 mb-8 leading-[1.1] tracking-tight">AI for <span class="text-blue-600">Healthcare</span></h1>
+                <p class="text-2xl text-slate-500 font-light max-w-2xl leading-relaxed">
+                    Bridging clinical knowledge and machine learning practice to design responsible health solutions.
+                </p>
+            </section>
+
+            <!-- Quick Specs Grid -->
+            <section id="details" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+                <div class="glass-card p-8 rounded-3xl">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Level</p>
+                    <p class="text-xl font-bold text-slate-800">Intermediate</p>
+                    <p class="text-sm text-slate-500 mt-1">Foundational to Applied</p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Total Time</p>
+                    <p class="text-xl font-bold text-slate-800">108 Hours</p>
+                    <p class="text-sm text-slate-500 mt-1">12 Weeks • 3 Sessions/wk</p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Delivery</p>
+                    <p class="text-xl font-bold text-slate-800">Hybrid</p>
+                    <p class="text-sm text-slate-500 mt-1">On-campus & Online</p>
+                </div>
+            </section>
+
+            <!-- Objectives Section -->
+            <section id="objectives" class="mb-24 scroll-mt-24">
+                <div class="flex items-center space-x-4 mb-12">
+                    <h3 class="text-3xl font-bold text-slate-900">Learning Objectives</h3>
+                    <div class="h-px flex-1 bg-slate-200"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Key Outcomes</p>
+                        <ul class="space-y-6">
+                            <li class="check-item flex items-start text-slate-700 font-medium">Explain the role of machine learning in modern healthcare systems</li>
+                            <li class="check-item flex items-start text-slate-700 font-medium">Prepare and analyze healthcare datasets for machine learning tasks</li>
+                            <li class="check-item flex items-start text-slate-700 font-medium">Build supervised and unsupervised learning models for clinical use cases</li>
+                            <li class="check-item flex items-start text-slate-700 font-medium">Evaluate models using clinically meaningful metrics</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-6 md:mt-10">
+                        <ul class="space-y-6">
+                            <li class="check-item flex items-start text-slate-700 font-medium">Apply predictive modeling for disease prevention and health system planning</li>
+                            <li class="check-item flex items-start text-slate-700 font-medium">Address ethical, fairness, and deployment challenges in healthcare AI</li>
+                            <li class="check-item flex items-start text-slate-700 font-medium">Communicate findings effectively to clinical and technical stakeholders</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Accreditation & Resources -->
+            <section id="accreditation" class="mb-24 grid grid-cols-1 md:grid-cols-2 gap-16 scroll-mt-24">
+                <div>
+                    <h3 class="text-3xl font-bold text-slate-900 mb-8 italic">Accreditation</h3>
+                    <ul class="space-y-5 text-slate-600">
+                        <li class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 shadow-sm shadow-blue-200"></span>
+                            <span class="font-medium">Outcomes-based learning objectives</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 shadow-sm shadow-blue-200"></span>
+                            <span class="font-medium">Emphasis on ethical and responsible AI</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 shadow-sm shadow-blue-200"></span>
+                            <span class="font-medium">Practical workforce-relevant skills</span>
+                        </li>
+                        <li class="mt-8 p-6 bg-slate-100/50 rounded-2xl border-l-4 border-blue-500 text-sm italic text-slate-500">
+                            Suitable for academic credit, CPD/CME, and funded capacity-building programs.
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-slate-900 mb-8 italic">Instructor Kit</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="group p-6 bg-white border border-slate-100 rounded-3xl shadow-sm hover:border-blue-300 transition-all cursor-pointer">
+                            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            </div>
+                            <p class="font-bold text-slate-900 mb-1 text-sm">Lecture Slides</p>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">PDF / KEY</p>
+                        </div>
+                        <div class="group p-6 bg-white border border-slate-100 rounded-3xl shadow-sm hover:border-blue-300 transition-all cursor-pointer">
+                            <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                            </div>
+                            <p class="font-bold text-slate-900 mb-1 text-sm">Notebooks</p>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">IPYNB / PY</p>
+                        </div>
+                        <div class="group p-6 bg-white border border-slate-100 rounded-3xl shadow-sm hover:border-blue-300 transition-all cursor-pointer">
+                            <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <p class="font-bold text-slate-900 mb-1 text-sm">Solution Guides</p>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">ANNOTATED</p>
+                        </div>
+                        <div class="group p-6 bg-white border border-slate-100 rounded-3xl shadow-sm hover:border-blue-300 transition-all cursor-pointer">
+                            <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+                            </div>
+                            <p class="font-bold text-slate-900 mb-1 text-sm">Assessments</p>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">RUBRICS</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Weekly Lesson Plan Accordion -->
+            <section id="lesson-plan" class="mb-24 scroll-mt-24">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <h3 class="text-3xl font-bold text-slate-900 mb-2">Weekly Lesson Plan</h3>
+                        <p class="text-slate-500 font-medium">A modular 12-week roadmap for healthcare AI</p>
+                    </div>
+                    <button onclick="toggleAllWeeks()" id="toggleAllBtn" class="no-print mt-6 md:mt-0 bg-blue-50 text-blue-600 hover:bg-blue-100 px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all active:scale-95">
+                        Expand All Weeks
+                    </button>
+                </div>
+                
+                <div class="space-y-4" id="weeks-container">
+                    <script>
+                        const weeklyData = [
+                            {
+                                week: 1, 
+                                title: "AI, ML, and Healthcare Data Foundations",
+                                concepts: ["AI vs ML vs Data Science boundaries", "Real-world healthcare AI applications", "Types of data: EHR, labs, imaging", "Missing data, noise, and privacy"],
+                                tools: ["Environment setup: Jupyter", "Python syntax: lists, dicts", "pandas DataFrames Intro"],
+                                lab: ["Load clinical dataset", "Explore basic statistics", "Map clinical problems to ML"]
+                            },
+                            {
+                                week: 2, 
+                                title: "Python Programming for Healthcare Analysis",
+                                concepts: ["Python fundamentals for data work", "Writing clean, readable code", "Functions and control flow"],
+                                tools: ["Python functions and loops", "NumPy arrays and operations", "pandas: Series & Indexing"],
+                                lab: ["Load patient data from CSV", "Clean names and data types", "Compute indicators (BMI, age)"]
+                            },
+                            {
+                                week: 3, 
+                                title: "Data Wrangling and Clinical Visualization",
+                                concepts: ["Medicine data distributions", "Detecting anomalies & quality issues", "Visualization in health context"],
+                                tools: ["pandas cleaning & merging", "Matplotlib and Seaborn plotting", "NumPy & SciPy descriptive stats"],
+                                lab: ["Visualize Glucose & BMI dists", "Identify outliers & missing values", "Summarize patterns visually"]
+                            },
+                            {
+                                week: 4, 
+                                title: "Data Preprocessing and Feature Engineering",
+                                concepts: ["Missing data strategies in health", "Feature engineering with meaning", "Handling class imbalance"],
+                                tools: ["sklearn preprocessing suite", "Imputation, scaling, encoding", "Feature creation with pandas"],
+                                lab: ["Preprocess diabetes dataset", "Engineer interpretable features", "Prepare data for modeling"]
+                            },
+                            {
+                                week: 5, 
+                                title: "Supervised Learning – Regression Models",
+                                concepts: ["Linear vs logistic regression", "Assumptions in clinical data", "Interpreting coefficients medically"],
+                                tools: ["sklearn regression models", "Train-test split strategy", "Basic model pipelines"],
+                                lab: ["Logistic regression for risk", "Interpret model coefficients", "Evaluate basic performance"]
+                            },
+                            {
+                                week: 6, 
+                                title: "Tree-Based and Ensemble Models",
+                                concepts: ["Trees in clinical decision-making", "Random forests & ensembles", "Interpretability vs performance"],
+                                tools: ["sklearn trees & forests", "Feature importance analysis", "Model comparison techniques"],
+                                lab: ["Compare models on patient data", "Analyze feature importance", "Discuss clinical interpretability"]
+                            },
+                            {
+                                week: 7, 
+                                title: "Model Evaluation and Clinical Validation",
+                                concepts: ["Accuracy vs clinical relevance", "Precision, recall, F1-score", "ROC, AUC, and calibration"],
+                                tools: ["sklearn metrics module", "Confusion matrix plotting", "Eval metric visualization"],
+                                lab: ["Healthcare-appropriate metrics", "Visualize ROC curves", "False Positives vs Negatives"]
+                            },
+                            {
+                                week: 8, 
+                                title: "Predictive Modeling for Disease Prevention",
+                                concepts: ["Risk stratification", "Early disease detection", "Turning predictions into action"],
+                                tools: ["End-to-end sklearn pipelines", "Probability thresholds", "Model tuning basics"],
+                                lab: ["Chronic disease case study", "Optimize thresholds for prevention", "Clinical interpretation"]
+                            },
+                            {
+                                week: 9, 
+                                title: "Infectious Disease Modeling & Time Series",
+                                concepts: ["Time series fundamentals", "Surveillance and outbreak data", "ML vs traditional epidemiology"],
+                                tools: ["pandas time series handling", "SciPy for statistical analysis", "Intro to time-based modeling"],
+                                lab: ["Infectious disease trend analysis", "Forecast short-term case counts", "Visualize outbreaks over time"]
+                            },
+                            {
+                                week: 10, 
+                                title: "Unsupervised Learning in Healthcare",
+                                concepts: ["Clustering and patient phenotyping", "Dimensionality reduction basics", "Use cases in population health"],
+                                tools: ["sklearn clustering algorithms", "PCA for clinical data", "Visualization of clusters"],
+                                lab: ["Patient segmentation analysis", "Identify clinical phenotypes", "Clinical group interpretation"]
+                            },
+                            {
+                                week: 11, 
+                                title: "Automation, Decision Support, and Ethics",
+                                concepts: ["Clinical decision support systems", "Human-in-the-loop ML", "Bias, fairness, and trust in health AI", "Deployment and monitoring basics"],
+                                tools: ["Simple automation workflows", "Bias analysis tools", "Model monitoring concepts"],
+                                lab: ["Design a clinical DS prototype", "Perform bias and fairness analysis", "Discuss deployment safeguards"]
+                            },
+                            {
+                                week: 12, 
+                                title: "Capstone Project",
+                                concepts: ["Defining relevant clinical challenges", "Professional best practices", "Communication to stakeholders"],
+                                tools: ["Full ML Stack", "Presentation software", "Project management"],
+                                lab: ["Capstone development", "Final model validation", "Project presentation"]
+                            }
+                        ];
+
+                        document.write(weeklyData.map(w => `
+                            <div class="week-item border border-slate-200 rounded-3xl overflow-hidden bg-white shadow-sm transition-all hover:border-blue-400">
+                                <button onclick="toggleWeek(this)" class="week-header w-full flex items-center justify-between p-6 lg:p-8 text-left transition-colors focus:outline-none">
+                                    <div class="flex items-center space-x-6">
+                                        <div class="flex flex-col items-center justify-center bg-blue-50 text-blue-600 rounded-2xl w-14 h-14 shrink-0">
+                                            <span class="text-[10px] font-black uppercase leading-none">Wk</span>
+                                            <span class="text-xl font-black">${w.week}</span>
+                                        </div>
+                                        <h4 class="text-xl font-bold text-slate-800 tracking-tight leading-tight">${w.title}</h4>
+                                    </div>
+                                    <svg class="chevron-icon h-6 w-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div class="week-content px-6 lg:px-8 pb-8">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-50">
+                                        <div class="p-4 rounded-2xl">
+                                            <h5 class="text-blue-600 text-[10px] font-black uppercase tracking-[0.2em] mb-4">Core Concepts</h5>
+                                            <ul class="text-sm text-slate-600 space-y-3 font-medium">
+                                                ${w.concepts.map(c => `<li class="flex items-start"><span class="mr-2 text-blue-200">•</span>${c}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                        <div class="p-4 rounded-2xl">
+                                            <h5 class="text-indigo-600 text-[10px] font-black uppercase tracking-[0.2em] mb-4">Tools & Stack</h5>
+                                            <ul class="text-sm text-slate-600 space-y-3 font-medium">
+                                                ${w.tools.map(t => `<li class="flex items-start"><span class="mr-2 text-indigo-200">•</span>${t}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                        <div class="bg-slate-900 p-6 rounded-3xl shadow-xl text-white transform transition-transform hover:scale-[1.02]">
+                                            <h5 class="text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4">Notebook Lab</h5>
+                                            <ul class="text-sm text-blue-50 space-y-3 font-medium">
+                                                ${w.lab.map(l => `<li class="flex items-start"><svg class="w-4 h-4 mr-2 text-blue-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>${l}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join(''));
+                    </script>
+                </div>
+            </section>
+
+            <!-- Recommended Datasets Alignment -->
+            <section id="datasets" class="mb-24 scroll-mt-24">
+                <div class="flex items-center space-x-4 mb-12">
+                    <h3 class="text-3xl font-bold text-slate-900">Dataset Roadmap</h3>
+                    <div class="h-px flex-1 bg-slate-200"></div>
+                </div>
+                <div class="glass-card rounded-[2.5rem] overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead class="bg-slate-900 text-white text-[10px] uppercase tracking-widest">
+                                <tr>
+                                    <th class="p-6">Curriculum Phase</th>
+                                    <th class="p-6">Primary Lab Dataset</th>
+                                    <th class="p-6">Contextual Resources</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-700 font-medium">
+                                <tr class="border-b border-slate-100 hover:bg-blue-50/30 transition-colors">
+                                    <td class="p-6 font-black text-slate-400">Weeks 1-4</td>
+                                    <td class="p-6">PIMA Indians Diabetes (UCI)</td>
+                                    <td class="p-6 text-slate-400 italic">Synthetic EHR & Breast Cancer</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 hover:bg-blue-50/30 transition-colors">
+                                    <td class="p-6 font-black text-slate-400">Weeks 5-7</td>
+                                    <td class="p-6">UCI Heart Disease & Stroke</td>
+                                    <td class="p-6 text-slate-400 italic">Diabetes 130-US Hospitals</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 hover:bg-blue-50/30 transition-colors">
+                                    <td class="p-6 font-black text-slate-400">Weeks 8-10</td>
+                                    <td class="p-6">JHU COVID-19 & NHANES</td>
+                                    <td class="p-6 text-slate-400 italic">Infectious Disease Incidence</td>
+                                </tr>
+                                <tr class="hover:bg-blue-50/30 transition-colors">
+                                    <td class="p-6 font-black text-slate-400">Weeks 11-12</td>
+                                    <td class="p-6">Fairness Dataset (COMPAS)</td>
+                                    <td class="p-6 text-slate-400 italic">Capstone Portfolio Selection</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Readings -->
+            <section id="readings" class="mb-24 scroll-mt-24">
+                <div class="flex items-center space-x-4 mb-12">
+                    <h3 class="text-3xl font-bold text-slate-900">Recommended Readings</h3>
+                    <div class="h-px flex-1 bg-slate-200"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-10 bg-slate-900 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-600 rounded-full blur-[60px] opacity-30"></div>
+                        <h4 class="text-blue-400 font-black mb-8 uppercase tracking-[0.3em] text-[10px]">Core Literature</h4>
+                        <ul class="space-y-8">
+                            <li class="group cursor-pointer">
+                                <p class="text-blue-200 font-bold italic text-lg group-hover:text-white transition-colors">"Machine Learning for Healthcare"</p>
+                                <p class="text-xs text-slate-400 mt-1 uppercase font-bold tracking-widest">MIT Press • Primary Textbook</p>
+                            </li>
+                            <li class="group cursor-pointer">
+                                <p class="text-blue-200 font-bold italic text-lg group-hover:text-white transition-colors">"Interpretable Machine Learning"</p>
+                                <p class="text-xs text-slate-400 mt-1 uppercase font-bold tracking-widest">Molnar • Transparency Guide</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="p-10 bg-white border border-slate-200 rounded-[3rem] shadow-sm">
+                        <h4 class="text-slate-400 font-black mb-8 uppercase tracking-[0.3em] text-[10px]">Global Guidelines</h4>
+                        <ul class="space-y-6 text-slate-600 font-medium">
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 rounded-full bg-blue-500 mr-3 mt-1.5 shrink-0"></span>
+                                <span>WHO Guidance on Ethics and Governance of AI for Health</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 rounded-full bg-blue-500 mr-3 mt-1.5 shrink-0"></span>
+                                <span>Selected peer-reviewed Health AI research (JAMA, Lancet Digital Health)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 rounded-full bg-blue-500 mr-3 mt-1.5 shrink-0"></span>
+                                <span>NIST AI Risk Management Framework</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="pt-16 pb-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+                <p>&copy; 2026/2027 AI for Healthcare Program • Curriculum v2.1</p>
+                <div class="flex space-x-8 mt-6 md:mt-0">
+                    <a href="#" class="hover:text-blue-600 transition-colors">Institutional Portal</a>
+                    <a href="#" class="hover:text-blue-600 transition-colors">Academic Support</a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Scroll Progress Handler
+        window.onscroll = function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+            
+            // Highlight sidebar based on position
+            updateSidebarPosition();
+        };
+
+        function updateSidebarPosition() {
+            const sections = ['overview', 'objectives', 'accreditation', 'lesson-plan', 'datasets', 'readings'];
+            const statusLabel = document.getElementById('reading-status');
+            
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        document.querySelectorAll('.sidebar-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                                statusLabel.innerText = "Currently: " + link.innerText;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function toggleWeek(button) {
+            const item = button.parentElement;
+            const wasActive = item.classList.contains('active');
+            
+            // Optional: Close other weeks when opening one
+            // document.querySelectorAll('.week-item').forEach(w => w.classList.remove('active'));
+            
+            if (!wasActive) item.classList.add('active');
+            else item.classList.remove('active');
+        }
+
+        let allExpanded = false;
+        function toggleAllWeeks() {
+            const weeks = document.querySelectorAll('.week-item');
+            const btn = document.getElementById('toggleAllBtn');
+            allExpanded = !allExpanded;
+            
+            weeks.forEach(w => {
+                if (allExpanded) w.classList.add('active');
+                else w.classList.remove('active');
+            });
+
+            btn.innerText = allExpanded ? "Collapse All Weeks" : "Expand All Weeks";
+        }
+
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const isHidden = sidebar.classList.contains('hidden');
+            
+            if (isHidden) {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.add('fixed', 'inset-0', 'z-50', 'flex');
+            } else {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('fixed', 'inset-0', 'z-50', 'flex');
+            }
+        }
+
+        // Auto-expand Week 1 on load
+        window.addEventListener('load', () => {
+            const firstWeek = document.querySelector('.week-item');
+            if (firstWeek) firstWeek.classList.add('active');
+            updateSidebarPosition();
+        });
+    </script>
+</body>
+</html>
