@@ -93,6 +93,15 @@
             background-color: #f8fafc;
         }
 
+        /* Apply Now Pulse Animation */
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        .pulse-btn {
+            animation: pulse-soft 3s infinite ease-in-out;
+        }
+
         @media print {
             .no-print { display: none; }
             .print-full { width: 100% !important; margin: 0 !important; }
@@ -109,11 +118,14 @@
     <!-- Header Navigation (Mobile) -->
     <header class="lg:hidden bg-white/80 backdrop-blur-md border-b p-4 flex justify-between items-center sticky top-0 z-50">
         <h1 class="font-bold text-blue-900 text-lg serif-title">AI for Healthcare</h1>
-        <button onclick="toggleMobileMenu()" class="p-2 text-slate-600 active:scale-95 transition-transform">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-        </button>
+        <div class="flex items-center space-x-3">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVS4wYMyNO25JaCjigBBeSXuF_wgQyGoFXIe-u1i_xWgbKyw/viewform?usp=header" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-full text-xs font-bold shadow-md">Apply Now</a>
+            <button onclick="toggleMobileMenu()" class="p-2 text-slate-600 active:scale-95 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
     </header>
 
     <div class="flex min-h-screen">
@@ -138,7 +150,10 @@
                 <a href="#readings" class="sidebar-link flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600">Readings</a>
             </nav>
 
-            <div class="mt-8 pt-8 border-t border-slate-100">
+            <div class="mt-8 pt-8 border-t border-slate-100 space-y-3">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVS4wYMyNO25JaCjigBBeSXuF_wgQyGoFXIe-u1i_xWgbKyw/viewform?usp=header" target="_blank" class="pulse-btn block w-full bg-blue-600 text-white text-center text-sm font-bold py-3 px-4 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-100 active:scale-[0.98]">
+                    Apply Now
+                </a>
                 <button onclick="window.print()" class="w-full bg-slate-900 text-white text-sm font-semibold py-3 px-4 rounded-xl hover:bg-slate-800 transition shadow-lg shadow-slate-200 active:scale-[0.98]">
                     Export to PDF
                 </button>
@@ -150,14 +165,26 @@
             
             <!-- Hero Section -->
             <section id="overview" class="mb-20 pt-8 scroll-mt-24">
-                <div class="flex items-center space-x-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em] mb-6">
-                    <span class="bg-blue-600 text-white px-2 py-0.5 rounded">CORE</span>
-                    <span>Curriculum Overview</span>
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-2 text-blue-600 font-bold text-xs uppercase tracking-[0.2em]">
+                        <span class="bg-blue-600 text-white px-2 py-0.5 rounded">CORE</span>
+                        <span>Curriculum Overview</span>
+                    </div>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVS4wYMyNO25JaCjigBBeSXuF_wgQyGoFXIe-u1i_xWgbKyw/viewform?usp=header" target="_blank" class="no-print hidden md:inline-flex items-center text-blue-600 font-bold text-xs uppercase tracking-widest hover:text-blue-800 transition-colors">
+                        Online Application 
+                        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
                 </div>
                 <h1 class="serif-title text-5xl lg:text-8xl text-slate-900 mb-8 leading-[1.1] tracking-tight">AI for <span class="text-blue-600">Healthcare</span></h1>
                 <p class="text-2xl text-slate-500 font-light max-w-2xl leading-relaxed">
                     Bridging clinical knowledge and machine learning practice to design responsible health solutions.
                 </p>
+                
+                <div class="mt-10 no-print lg:hidden">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVS4wYMyNO25JaCjigBBeSXuF_wgQyGoFXIe-u1i_xWgbKyw/viewform?usp=header" target="_blank" class="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-blue-200 active:scale-95 transition-all">
+                        Apply for Next Cohort
+                    </a>
+                </div>
             </section>
 
             <!-- Quick Specs Grid -->
@@ -493,6 +520,7 @@
             <footer class="pt-16 pb-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">
                 <p>&copy; 2026/2027 AI for Healthcare Program • Curriculum v2.1</p>
                 <div class="flex space-x-8 mt-6 md:mt-0">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVS4wYMyNO25JaCjigBBeSXuF_wgQyGoFXIe-u1i_xWgbKyw/viewform?usp=header" target="_blank" class="hover:text-blue-600 transition-colors">Apply Now</a>
                     <a href="#" class="hover:text-blue-600 transition-colors">Institutional Portal</a>
                     <a href="#" class="hover:text-blue-600 transition-colors">Academic Support</a>
                 </div>
@@ -536,9 +564,6 @@
         function toggleWeek(button) {
             const item = button.parentElement;
             const wasActive = item.classList.contains('active');
-            
-            // Optional: Close other weeks when opening one
-            // document.querySelectorAll('.week-item').forEach(w => w.classList.remove('active'));
             
             if (!wasActive) item.classList.add('active');
             else item.classList.remove('active');
