@@ -17,8 +17,6 @@ This task simulates a real-world credit decision problem commonly used in banks 
 
 ## Recommended Dataset (Easy & Clean)
 
-### **:contentReference[oaicite:0]{index=0} – Loan Prediction Dataset**
-
 **Dataset link:**  
 https://www.kaggle.com/datasets/altruistdelhite04/loan-prediction-problem-dataset
 
