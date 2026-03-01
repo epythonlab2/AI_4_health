@@ -47,11 +47,10 @@ Binary classification
 
 ### Primary Dataset
 
-**Diabetes 130-US Hospitals Dataset**
+**Dataset: https://www.kaggle.com/datasets/vanpatangan/readmission-dataset**
 
 Platform: Kaggle  
-Description:
-- 100,000+ hospital encounters  
+Description: 
 - Demographics, diagnoses, medications, procedures  
 - Readmission outcome included  
 
