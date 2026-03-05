@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presenting AI/ML & Data Science Findings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --primary: #0ea5e9;
+            --secondary: #6366f1;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+        }
+
+      body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: #f8fafc;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Main slide wrapper */
+.slide-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+/* Slide card */
+.slide {
+    width: 100%;
+    max-width: 1100px;
+    height: 85vh;
+    background: var(--card-bg);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+    display: none;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+}
+
+/* Active slide */
+.slide.active {
+    display: flex;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Metric cards */
+.metric-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 1.25rem;
+    border-radius: 0.85rem;
+    transition: transform 0.2s ease, border 0.2s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+}
+
+/* Controls */
+.controls {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    gap: 0.75rem;
+    z-index: 100;
+}
+
+.btn {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border-radius: 0.7rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Progress bar */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transition: width 0.3s ease;
+    z-index: 1000;
+}
+
+/* Speaker notes */
+.speaker-notes-toggle {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 100;
+}
+
+.notes-panel {
+    position: fixed;
+    bottom: 5.5rem;
+    left: 2rem;
+    width: 320px;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    font-size: 0.85rem;
+    display: none;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+    border-left: 4px solid #d97706;
+}
+
+.notes-panel.visible {
+    display: block;
+}
+
+/* Footer inside slide */
+.footer {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 2.5rem;
+    right: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 0.75rem;
+}
+
+/* Code style */
+code {
+    font-family: 'Fira Code', monospace;
+    color: var(--primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+
+    .slide {
+        padding: 2rem;
+        height: 90vh;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .slide-container {
+        padding: 1rem;
+    }
+
+    .footer {
+        left: 1.5rem;
+        right: 1.5rem;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+
+    <div class="slide-container">
+        <!-- Slide 1 -->
+        <div class="slide active" data-notes="Introduce yourself, mention your experience in AI/ML, and set expectations: this deck combines technical project presentation and career-ready communication.">
+            <div class="flex-1 flex flex-col justify-center text-center">
+                <div class="mb-6 inline-block mx-auto px-4 py-1 rounded-full bg-sky-500/10 text-sky-400 text-sm font-semibold border border-sky-500/20">
+                    Project Presentation & Career Readiness
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                    Presenting AI/ML & Data Science Findings
+                </h1>
+                <p class="text-xl text-slate-400 mb-8">Communicating Insights with Impact for Projects & Career Growth</p>
+                <div class="text-lg font-medium text-sky-500">Asibeh Tenager</div>
+                <div class="text-sm text-slate-500 uppercase tracking-widest mt-1">AI Educator & Developer</div>
+            </div>
+            <div class="footer">
+                <span>Slide 1 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide" data-notes="Emphasize that ML models and data pipelines are only valuable if stakeholders understand their implications.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Why Presenting AI/ML Findings Matters</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+                <div class="metric-card">
+                    <div class="text-3xl mb-4">🎯</div>
+                    <h3 class="font-bold mb-2">Evidence-Based</h3>
+                    <p class="text-slate-400 text-sm">Decisions rely on data-driven insights rather than gut feelings.</p>
+                </div>
+                <div class="metric-card">
+                    <div class="text-3xl mb-4">🔍</div>
+                    <h3 class="font-bold mb-2">Clarity over Complexity</h3>
+                    <p class="text-slate-400 text-sm">ML outputs are complex—clarity is the bridge to adoption.</p>
+                </div>
+                <div class="metric-card">
+                    <div class="text-3xl mb-4">🚀</div>
+                    <h3 class="font-bold mb-2">Actionable Influence</h3>
+                    <p class="text-slate-400 text-sm">Influence stakeholders with insights that drive concrete next steps.</p>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 2 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide" data-notes="These objectives bridge technical and professional communication.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Learning Objectives</h2>
+            <ul class="space-y-6 text-lg mt-4">
+                <li class="flex items-start">
+                    <span class="text-sky-500 mr-4">▹</span>
+                    <span>Translate AI/ML results into <strong>clear, non-technical insights</strong>.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-sky-500 mr-4">▹</span>
+                    <span>Use effective <strong>visualizations</strong> for complex model outputs.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-sky-500 mr-4">▹</span>
+                    <span>Present DS projects effectively in <strong>reviews or interviews</strong>.</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-sky-500 mr-4">▹</span>
+                    <span>Connect technical findings directly to <strong>business impact</strong>.</span>
+                </li>
+            </ul>
+            <div class="footer">
+                <span>Slide 3 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide" data-notes="Knowing your audience informs the depth of technical content and the type of visuals.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Understanding Your Audience</h2>
+            <div class="space-y-4">
+                <div class="p-4 border-l-4 border-sky-500 bg-white/5">
+                    <h4 class="font-bold text-sky-400">Technical (Engineers/Scientists)</h4>
+                    <p class="text-sm text-slate-300">Focus on methodology, evaluation metrics, and model performance architecture.</p>
+                </div>
+                <div class="p-4 border-l-4 border-indigo-500 bg-white/5">
+                    <h4 class="font-bold text-indigo-400">Non-Technical (Execs/Managers)</h4>
+                    <p class="text-sm text-slate-300">Focus on business impact, high-level decisions, and ROI visualizations.</p>
+                </div>
+                <div class="p-4 border-l-4 border-emerald-500 bg-white/5">
+                    <h4 class="font-bold text-emerald-400">Mixed Audience</h4>
+                    <p class="text-sm text-slate-300">Start with the 'What' (Impact), then offer the 'How' (Tech) as supporting evidence.</p>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 4 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide" data-notes="Frame the presentation to follow the natural data science lifecycle.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Structuring the Presentation</h2>
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-4 bg-white/5 p-3 rounded">
+                    <span class="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold">1</span>
+                    <span>Problem Definition & Goals</span>
+                </div>
+                <div class="flex items-center gap-4 bg-white/5 p-3 rounded">
+                    <span class="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold">2</span>
+                    <span>Data Sourcing & EDA</span>
+                </div>
+                <div class="flex items-center gap-4 bg-white/5 p-3 rounded">
+                    <span class="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold">3</span>
+                    <span>Modeling Approach</span>
+                </div>
+                <div class="flex items-center gap-4 bg-white/5 p-3 rounded">
+                    <span class="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold">4</span>
+                    <span>Results & Robust Evaluation</span>
+                </div>
+                <div class="flex items-center gap-4 bg-white/5 p-3 rounded">
+                    <span class="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center text-xs font-bold">5</span>
+                    <span>Recommendations & ROI</span>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 5 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide" data-notes="Even complex models should be presented as solutions to a concrete problem.">
+            <h2 class="text-3xl font-bold mb-6 text-sky-400">Storytelling with AI</h2>
+            <div class="relative py-10">
+                <div class="absolute left-1/2 top-0 bottom-0 w-px bg-slate-700 hidden md:block"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="text-right hidden md:block">
+                        <div class="font-bold text-xl mb-1">The Conflict</div>
+                        <p class="text-slate-400">Problem & Limitations</p>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-bold text-xl mb-1 text-sky-400">The Resolution</div>
+                        <p class="text-slate-400">Model, Insights & Impact</p>
+                    </div>
+                </div>
+                <div class="mt-8 p-6 bg-sky-500/5 rounded-xl border border-sky-500/20 italic text-center">
+                    "A model is just an equation; a solution is a story about solving a problem."
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 6 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide" data-notes="Visuals help translate model outputs into understandable insights.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Visualizing Findings</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-4 border border-white/10 rounded-lg text-center">
+                    <div class="h-10 flex items-center justify-center text-4xl">📊</div>
+                    <div class="font-bold mt-2">F1 & ROC</div>
+                    <p class="text-xs text-slate-400">Performance Metrics</p>
+                </div>
+                <div class="p-4 border border-white/10 rounded-lg text-center">
+                    <div class="h-10 flex items-center justify-center text-4xl">🎯</div>
+                    <div class="font-bold mt-2">Confusion Matrix</div>
+                    <p class="text-xs text-slate-400">Classification Clarity</p>
+                </div>
+                <div class="p-4 border border-white/10 rounded-lg text-center">
+                    <div class="h-10 flex items-center justify-center text-4xl">⭐</div>
+                    <div class="font-bold mt-2">SHAP Values</div>
+                    <p class="text-xs text-slate-400">Feature Importance</p>
+                </div>
+                <div class="p-4 border border-white/10 rounded-lg text-center">
+                    <div class="h-10 flex items-center justify-center text-4xl">📉</div>
+                    <div class="font-bold mt-2">Actual vs Pred</div>
+                    <p class="text-xs text-slate-400">Regression Error</p>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 7 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide" data-notes="Explain why each visualization is appropriate for specific ML findings.">
+            <h2 class="text-3xl font-bold mb-6 text-sky-400">Choosing the Right Charts</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-white/10">
+                        <tr>
+                            <th class="p-3">Data Type</th>
+                            <th class="p-3">Best Chart</th>
+                            <th class="p-3">Insight</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        <tr>
+                            <td class="p-3">Time Series</td>
+                            <td class="p-3">Line/Area</td>
+                            <td class="p-3">Trends & Seasonality</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3">Model Comp</td>
+                            <td class="p-3">Bar Charts</td>
+                            <td class="p-3">Benchmark performance</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3">Clustering</td>
+                            <td class="p-3">Scatter Plots</td>
+                            <td class="p-3">Segment identification</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3">Correlation</td>
+                            <td class="p-3">Heatmaps</td>
+                            <td class="p-3">Feature relationships</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="footer">
+                <span>Slide 8 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="slide" data-notes="Avoid overloading with too many metrics—focus on what matters most.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Highlighting Key Findings</h2>
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 bg-sky-500/10 p-4 rounded-lg">
+                    <div class="text-2xl">🔝</div>
+                    <div>
+                        <div class="font-bold">Top Predictors</div>
+                        <p class="text-sm text-slate-400">Identify the top 3-5 features that drive model decisions.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 bg-indigo-500/10 p-4 rounded-lg">
+                    <div class="text-2xl">📈</div>
+                    <div>
+                        <div class="font-bold">Delta Improvement</div>
+                        <p class="text-sm text-slate-400">Clearly show how much better the model is vs. a random baseline.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 bg-emerald-500/10 p-4 rounded-lg">
+                    <div class="text-2xl">💡</div>
+                    <div>
+                        <div class="font-bold">Actionable Insights</div>
+                        <p class="text-sm text-slate-400">Focus on the 'Why' behind the numbers for decision support.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 9 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide" data-notes="Tie ML outputs directly to decisions stakeholders can act on.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Model Results to Action</h2>
+            <div class="flex flex-col h-full justify-center text-center gap-6">
+                <div class="text-xl text-slate-300">"If the prediction says $X$, we should do $Y$ to achieve $Z$."</div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-white/5 p-4 rounded">
+                        <div class="text-sky-400 font-bold mb-1">Revenue</div>
+                        <div class="text-sm text-slate-400">Increase LTV</div>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded">
+                        <div class="text-sky-400 font-bold mb-1">Efficiency</div>
+                        <div class="text-sm text-slate-400">Reduce manual work</div>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded">
+                        <div class="text-sky-400 font-bold mb-1">Risk</div>
+                        <div class="text-sm text-slate-400">Decrease churn/fraud</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 10 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide" data-notes="Complex AI outputs should always be translated to understandable results.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Handling Model Complexity</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold text-indigo-400 mb-2">Technique: Analogies</h4>
+                    <p class="text-sm text-slate-300">Compare neural network layers to "filters in a camera" or ensembles to "a panel of experts."</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-indigo-400 mb-2">Simplify Architecture</h4>
+                    <p class="text-sm text-slate-300">Use high-level block diagrams. Avoid raw equations unless requested.</p>
+                </div>
+                <div class="md:col-span-2 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded">
+                    <p class="text-sm italic">Pro-tip: If you can't explain your model to a 10-year-old, you don't understand it well enough for an executive presentation.</p>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 11 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide" data-notes="Show how your model choice improves outcomes.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Comparative & Benchmark Analysis</h2>
+            <div class="space-y-6">
+                <div class="flex justify-between items-end h-32 px-10 border-b border-white/20">
+                    <div class="w-16 bg-slate-600 rounded-t" style="height: 40%"></div>
+                    <div class="w-16 bg-slate-500 rounded-t" style="height: 60%"></div>
+                    <div class="w-16 bg-sky-500 rounded-t shadow-lg shadow-sky-500/50" style="height: 90%"></div>
+                </div>
+                <div class="flex justify-between px-10 text-xs text-slate-400">
+                    <div class="w-16 text-center">Baseline</div>
+                    <div class="w-16 text-center">Random Forest</div>
+                    <div class="w-16 text-center text-sky-400 font-bold">XGBoost (Selected)</div>
+                </div>
+                <p class="text-sm text-center text-slate-400 mt-4">Justify your choice through cross-validation and rigorous test set metrics.</p>
+            </div>
+            <div class="footer">
+                <span>Slide 12 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide" data-notes="Helps stakeholders understand risk and expected performance.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Scenario Analysis & Forecasting</h2>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="bg-white/5 p-4 rounded-xl">
+                    <h4 class="font-bold mb-2">Predictive Modeling</h4>
+                    <p class="text-xs text-slate-400">Show future trends based on existing features.</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl">
+                    <h4 class="font-bold mb-2">"What-If" Analysis</h4>
+                    <p class="text-xs text-slate-400">Change input variables to see simulated outcomes.</p>
+                </div>
+                <div class="col-span-2 bg-white/5 p-4 rounded-xl text-center">
+                    <h4 class="font-bold mb-2">Confidence Bands</h4>
+                    <p class="text-xs text-slate-400 italic">Always visualize uncertainty to avoid misleading stakeholders.</p>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 13 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide" data-notes="Storyboarding ensures logical progression and audience clarity.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Storyboarding Your Presentation</h2>
+            <div class="flex gap-4 overflow-hidden">
+                <div class="flex-1 border border-white/10 rounded p-2 text-[10px] text-slate-500">
+                    <div class="bg-slate-700 h-10 mb-1"></div> Title
+                </div>
+                <div class="flex-1 border border-white/10 rounded p-2 text-[10px] text-slate-500">
+                    <div class="bg-slate-700 h-10 mb-1"></div> Problem
+                </div>
+                <div class="flex-1 border border-white/10 rounded p-2 text-[10px] text-slate-500">
+                    <div class="bg-slate-700 h-10 mb-1"></div> Data
+                </div>
+                <div class="flex-1 border border-sky-500/50 rounded p-2 text-[10px] text-sky-500 font-bold">
+                    <div class="bg-sky-900 h-10 mb-1"></div> Insight
+                </div>
+                <div class="flex-1 border border-white/10 rounded p-2 text-[10px] text-slate-500">
+                    <div class="bg-slate-700 h-10 mb-1"></div> Impact
+                </div>
+            </div>
+            <ul class="mt-8 space-y-2 text-sm">
+                <li>• Identify <strong>One Key Insight</strong> per slide.</li>
+                <li>• Ensure a logical flow (Pipeline to Product).</li>
+                <li>• Use diagrams to summarize complex architectures.</li>
+            </ul>
+            <div class="footer">
+                <span>Slide 14 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 15 -->
+        <div class="slide" data-notes="Visual clarity is critical for complex data and model outputs.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Slide Design for Data Projects</h2>
+            <div class="grid grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <div class="text-green-400 font-bold">DO:</div>
+                    <ul class="text-sm space-y-2">
+                        <li>✓ Minimal text, maximal whitespace.</li>
+                        <li>✓ Clear legends and high-res visuals.</li>
+                        <li>✓ Consistent branding/colors.</li>
+                    </ul>
+                </div>
+                <div class="space-y-4">
+                    <div class="text-red-400 font-bold">DON'T:</div>
+                    <ul class="text-sm space-y-2">
+                        <li>✗ Screenshot huge code blocks.</li>
+                        <li>✗ Use default Excel charts.</li>
+                        <li>✗ Overload with 10+ metrics per slide.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 15 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 16 -->
+        <div class="slide" data-notes="Engagement ensures comprehension and buy-in.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Engaging Stakeholders</h2>
+            <div class="flex gap-6 h-full items-center">
+                <div class="flex-1 space-y-4">
+                    <div class="bg-white/5 p-4 rounded-lg">
+                        <h4 class="font-bold text-sky-400">Interactive Demos</h4>
+                        <p class="text-xs">Streamlit / Gradio apps allow users to play with inputs.</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded-lg">
+                        <h4 class="font-bold text-sky-400">Check for Understanding</h4>
+                        <p class="text-xs">Ask: "Does this feature alignment match your domain expertise?"</p>
+                    </div>
+                </div>
+                <div class="w-1/3 bg-sky-500/20 h-48 rounded-xl flex items-center justify-center border border-sky-500/30">
+                    <span class="text-4xl">📱</span>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 16 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 17 -->
+        <div class="slide" data-notes="ML projects are only impactful if recommendations are actionable.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Delivering Recommendations</h2>
+            <div class="bg-indigo-900/20 border border-indigo-500/30 p-6 rounded-xl">
+                <h3 class="font-bold mb-4 text-indigo-400 text-xl">The Road to Production</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">🚀</div>
+                        <p class="font-bold text-xs uppercase">Deployment</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">👁️</div>
+                        <p class="font-bold text-xs uppercase">Monitoring</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">🔄</div>
+                        <p class="font-bold text-xs uppercase">Retraining</p>
+                    </div>
+                </div>
+                <p class="mt-6 text-sm text-slate-400">Align every recommendation with a specific business objective (KPI).</p>
+            </div>
+            <div class="footer">
+                <span>Slide 17 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 18 -->
+        <div class="slide" data-notes="Transparency builds trust in AI/ML findings.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Communicating Uncertainty</h2>
+            <div class="space-y-6">
+                <div class="p-4 bg-red-500/5 border-l-4 border-red-500 text-sm">
+                    <strong>Caveat:</strong> "The model assumes that the 2024 economic conditions will persist."
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white/5 p-4 rounded">
+                        <h4 class="font-bold text-xs text-slate-500 mb-2 uppercase">Precision-Recall Tradeoff</h4>
+                        <p class="text-xs">Explain why we chose one over the other based on risk.</p>
+                    </div>
+                    <div class="bg-white/5 p-4 rounded">
+                        <h4 class="font-bold text-xs text-slate-500 mb-2 uppercase">Data Drift</h4>
+                        <p class="text-xs">Highlight when the model might need a fresh look.</p>
+                    </div>
+                </div>
+                <p class="text-center text-slate-400 italic">Transparency > False Certainty</p>
+            </div>
+            <div class="footer">
+                <span>Slide 18 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 19 -->
+        <div class="slide" data-notes="Rehearsal is especially important for technical explanations.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400">Practicing & Rehearsing</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white/5 p-5 rounded-lg border border-white/10">
+                    <h4 class="font-bold mb-2">The Peer Review</h4>
+                    <p class="text-sm text-slate-400">Explain the model to a non-DS colleague. If they get it, you're ready.</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-lg border border-white/10">
+                    <h4 class="font-bold mb-2">The Tech Check</h4>
+                    <p class="text-sm text-slate-400">Ensure your live dashboard or demo loads in < 3 seconds.</p>
+                </div>
+                <div class="md:col-span-2 text-center text-sm text-sky-500">
+                    "Practice makes permanent. Perfect practice makes impactful presentations."
+                </div>
+            </div>
+            <div class="footer">
+                <span>Slide 19 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+
+        <!-- Slide 20 -->
+        <div class="slide" data-notes="Confidence and clarity reinforce credibility.">
+            <h2 class="text-3xl font-bold mb-8 text-sky-400 text-center">Final Q&A</h2>
+            <div class="flex-1 flex flex-col justify-center items-center gap-6">
+                <div class="text-6xl">❓</div>
+                <div class="text-xl text-slate-400">Open for Questions</div>
+                <div class="flex gap-4">
+                    <div class="px-4 py-2 bg-sky-500/10 rounded text-xs">Methodology</div>
+                    <div class="px-4 py-2 bg-sky-500/10 rounded text-xs">Metrics</div>
+                    <div class="px-4 py-2 bg-sky-500/10 rounded text-xs">Business Impact</div>
+                </div>
+                
+            </div>
+            <div class="footer">
+                <span>Slide 20 / 20</span>
+                <span>Asibeh Tenager – AI Educator & Developer</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="notes-panel" id="notes">
+        <strong>Speaker Notes:</strong>
+        <div id="notes-content" class="mt-2"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="prevSlide()">PREV</button>
+        <button class="btn" onclick="nextSlide()">NEXT</button>
+    </div>
+
+    <div class="speaker-notes-toggle">
+        <button class="btn bg-amber-500/20 border-amber-500/50" onclick="toggleNotes()">📝 NOTES</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.getElementById('progress');
+        const notesPanel = document.getElementById('notes');
+        const notesContent = document.getElementById('notes-content');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                    notesContent.innerText = slide.getAttribute('data-notes');
+                }
+            });
+            progress.style.width = ((currentSlide + 1) / slides.length) * 100 + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function toggleNotes() {
+            notesPanel.classList.toggle('visible');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize first slide notes
+        updateSlide();
+    </script>
+</body>
+</html>
