@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Presentation: Data Role Interview Prep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #10b981;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* --- MAIN VIEWPORT --- */
+        #presentation-viewport {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        /* --- SLIDE CONTAINER --- */
+        .slide-stage {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #334155;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            padding: 60px;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: var(--transition);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .slide.prev {
+            transform: translateX(-50px);
+        }
+
+        /* --- TYPOGRAPHY & ELEMENTS --- */
+        h1 { font-family: 'Poppins'; font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; color: white; }
+        h2 { font-family: 'Poppins'; font-size: 2.2rem; margin-bottom: 30px; color: var(--primary-light); border-left: 5px solid var(--primary); padding-left: 20px; }
+        .subtitle { font-size: 1.5rem; color: var(--text-muted); }
+        
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
+        .bullet-list { list-style: none; }
+        .bullet-list li { margin-bottom: 15px; font-size: 1.1rem; display: flex; align-items: flex-start; gap: 12px; }
+        .bullet-list i { color: var(--primary-light); margin-top: 5px; }
+
+        .stat-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+        .stat-card h3 { color: var(--primary-light); margin-bottom: 10px; font-size: 1.2rem; }
+
+        /* --- CONTROLS --- */
+        .controls {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .btn {
+            background: var(--bg-card);
+            border: 1px solid #334155;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .btn:hover { background: var(--primary); border-color: var(--primary); transform: scale(1.1); }
+        
+        .btn-text {
+            border-radius: 30px;
+            width: auto;
+            padding: 0 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        #progress-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: #1e293b;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* --- SPEAKER NOTES PANEL --- */
+        #notes-panel {
+            width: 0;
+            background: #0a0f1d;
+            border-left: 1px solid #334155;
+            overflow-y: auto;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #notes-panel.open { width: 350px; padding: 30px; }
+
+        .notes-header { font-family: 'Poppins'; font-size: 1.2rem; color: var(--primary-light); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .notes-content { line-height: 1.6; color: #cbd5e1; font-size: 1rem; }
+        .notes-content b { color: white; display: block; margin-top: 15px; }
+
+        /* --- HELPER CLASSES --- */
+        .centered { text-align: center; align-items: center; }
+        .tag { background: var(--primary); padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+
+        @media (max-width: 768px) {
+            .slide-stage { aspect-ratio: auto; height: 80vh; }
+            h1 { font-size: 2rem; }
+            .content-grid { grid-template-columns: 1fr; }
+            #notes-panel.open { width: 100%; position: absolute; z-index: 1000; height: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-viewport">
+        <div class="slide-stage" id="stage">
+            <!-- Slides will be injected here by JS -->
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="prevSlide()" title="Previous (Left Arrow)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div id="slide-counter" style="font-weight: 600; min-width: 60px; text-align: center;">1 / 30</div>
+            <button class="btn" onclick="nextSlide()" title="Next (Right Arrow)"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="btn btn-text" onclick="toggleNotes()">
+                <i class="fa-solid fa-file-lines" style="margin-right: 8px;"></i> Notes
+            </button>
+        </div>
+
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+
+    <aside id="notes-panel">
+        <div class="notes-header">
+            <i class="fa-solid fa-comment-dots"></i>
+            Speaker Notes
+        </div>
+        <div id="active-note" class="notes-content">
+            <!-- Notes injected by JS -->
+        </div>
+    </aside>
+
+    <script>
+        const slideData = [
+            {
+                title: "Project Presentation & Career Readiness",
+                subtitle: "Interview Preparation for Data Roles\nAsibeh Tenager – AI Educator & Developer",
+                type: "title",
+                notes: "Welcome, everyone. Today, we are focusing on the bridge between technical capability and career success. Having the skills is 50%; demonstrating them in an interview is the other 50%."
+            },
+            {
+                title: "Why Interview Prep Matters",
+                bullets: [
+                    "Data roles are highly competitive.",
+                    "Employers evaluate technical + communication skills",
+                    "Preparation builds boardroom-ready confidence",
+                    "Projects are often the primary hiring signal."
+                ],
+                notes: "The market is saturated with people who can code. Companies are looking for people who can solve business problems. This presentation will teach you how to present yourself as a problem solver."
+            },
+            {
+                title: "Common Data Career Paths",
+                bullets: [
+                    "Data Analyst: Descriptive/Diagnostic focus",
+                    "Data Scientist: Predictive/Experimental focus",
+                    "ML Engineer: Production/Architecture focus",
+                    "Data Engineer: Infrastructure/Pipeline focus",
+                    "AI Engineer: LLM/Generative AI implementation."
+                ],
+                notes: "Understand which bucket you fall into. A Data Analyst interview is heavy on SQL/Viz, while an ML Engineer interview is heavy on Software Engineering/Calculus."
+            },
+            {
+                title: "Core Skills Required",
+                grid: [
+                    { h: "Technical", p: "Python, SQL, R, Spark" },
+                    { h: "Mathematical", p: "Stats, Probability, Linear Algebra" },
+                    { h: "Analytical", p: "ML Algorithms, Data Cleaning" },
+                    { h: "Communication", p: "Data Storytelling, Stakeholder Management" }
+                ],
+                notes: "Don't just list these tools. Be ready to explain *why* you used a specific tool over another in your projects."
+            },
+            {
+                title: "The Interview Process",
+                bullets: [
+                    "Resume Screen: The 6-second audit",
+                    "Technical Screen: Live coding or SQL test",
+                    "Case Study: Business problem deep-dive",
+                    "Behavioral: Team fit and STAR method",
+                    "Final Round: Stakeholder/Exec review."
+                ],
+                notes: "Each stage has a different gatekeeper. Recruiters look for keywords; Senior Scientists look for logic; Managers look for culture fit."
+            },
+            {
+                title: "Building a Strong Resume",
+                bullets: [
+                    "Focus on Impact (Business Value)",
+                    "Quantify everything (%, $, Hours saved)",
+                    "Keep it to 1-2 pages",
+                    "Match keywords to the Job Description."
+                ],
+                notes: "A resume isn't a list of duties; it's a list of achievements. Instead of 'Cleaned data', use 'Reduced data processing latency by 30% through vectorization'."
+            },
+            {
+                title: "Impact Statements",
+                type: "example",
+                content: "Before: Built a churn model.\n\nAfter: Developed a Random Forest churn model that identified $2M in at-risk revenue, resulting in an 18% improvement in retention.",
+                notes: "The 'After' statement tells the hiring manager that you understand the bottom line. That is what gets you hired."
+            },
+            {
+                title: "Importance of Portfolio Projects",
+                bullets: [
+                    "Proof of work vs. theory",
+                    "Demonstrates end-to-end thinking",
+                    "Provides 'Hooks' for interview questions",
+                    "Builds your personal brand (GitHub/LinkedIn)"
+                ],
+                notes: "Your portfolio is your evidence. If you say you know NLP, I want to see a repo where you handled messy text data."
+            },
+            {
+                title: "Strong Project Structure",
+                bullets: [
+                    "1. Problem Statement: Why does this matter?",
+                    "2. Data Collection: Where did it come from?",
+                    "3. EDA: What were the surprises?",
+                    "4. Modeling: Which algorithm and why?",
+                    "5. Evaluation: How do we know it worked?",
+                    "6. Deployment: How is it used?"
+                ],
+                notes: "Most beginners skip steps 1 and 6. Professionals spend the most time on steps 1 and 6. Focus your talk here."
+            },
+            {
+                title: "Example: Fraud Detection",
+                grid: [
+                    { h: "Data", p: "1M+ credit card transactions" },
+                    { h: "Method", p: "Isolation Forest & XGBoost" },
+                    { h: "Metric", p: "Precision-Recall AUC (Handling imbalance)" },
+                    { h: "Impact", p: "99% detection rate of high-value fraud" }
+                ],
+                notes: "Use this as a template for your own projects. Notice the focus on metrics that matter for imbalanced datasets (Fraud)."
+            },
+            {
+                title: "Technical Interview: SQL",
+                bullets: [
+                    "Joins (Left, Inner, Self)",
+                    "Window Functions (Rank, Lead/Lag)",
+                    "CTEs vs Subqueries",
+                    "Aggregations with Group By/Having"
+                ],
+                notes: "SQL is non-negotiable. If you fail the SQL test, the interview usually ends there. Practice LeetCode/HackerRank SQL daily."
+            },
+            {
+                title: "Technical Interview: Python",
+                bullets: [
+                    "Data Structures (Lists, Dicts, Sets)",
+                    "Pandas: Groupby, Merge, Pivot",
+                    "NumPy: Vectorization vs Loops",
+                    "Efficiency: List comprehensions."
+                ],
+                notes: "Interviewers look at your 'Pythonic' style. Avoid for-loops when working with dataframes; it shows you don't know Pandas optimization."
+            },
+            {
+                title: "Machine Learning Questions",
+                bullets: [
+                    "Explain Overfitting vs Underfitting",
+                    "What is the Bias-Variance tradeoff?",
+                    "How do you handle missing data?",
+                    "Difference between L1 and L2 regularization?"
+                ],
+                notes: "Don't just give a textbook definition. Give an example. 'I saw overfitting in my project when my training accuracy was 99% but test was 70%...'"
+            },
+            {
+                title: "Statistics Fundamentals",
+                bullets: [
+                    "P-values and Significance",
+                    "Central Limit Theorem",
+                    "A/B Testing design",
+                    "Confidence Intervals"
+                ],
+                notes: "A/B testing is the most common stats question in the industry. Know how to calculate sample size and power."
+            },
+            {
+                title: "Case Study Interviews",
+                type: "centered",
+                content: "Scenario: 'Our user engagement dropped 10% last week. How would you investigate this using data?'",
+                notes: "There is no single right answer. They want to see your framework: Is it a logging bug? Seasonality? A specific region? Competitor action?"
+            },
+            {
+                title: "The STAR Method",
+                grid: [
+                    { h: "Situation", p: "Context of the challenge" },
+                    { h: "Task", p: "What needed to be done" },
+                    { h: "Action", p: "What YOU specifically did" },
+                    { h: "Result", p: "Outcome & Value delivered" }
+                ],
+                notes: "Use this for ALL behavioral questions. It prevents rambling and keeps your answers structured."
+            },
+            {
+                title: "Common Behavioral Questions",
+                bullets: [
+                    "Tell me about a time you failed.",
+                    "Describe a conflict with a teammate.",
+                    "How do you prioritize multiple tasks?",
+                    "Tell me about a time you had to explain data to a non-technical person."
+                ],
+                notes: "For 'Failure', choose a real technical failure, show how you took ownership, and explain what you learned."
+            },
+            {
+                title: "Explaining Technical Work",
+                bullets: [
+                    "Know your audience (CEO vs Engineer)",
+                    "Use analogies for complex math",
+                    "Focus on the 'So What?'",
+                    "Avoid reading code aloud"
+                ],
+                notes: "If you can't explain Random Forest to your grandmother, you don't understand it well enough for a business interview."
+            },
+            {
+                title: "Project Walkthrough Strategy",
+                bullets: [
+                    "Keep it to 2-3 minutes",
+                    "High-level overview first",
+                    "Invite questions into the details",
+                    "Show the dashboard/app if possible"
+                ],
+                notes: "Don't start with the code. Start with: 'The business was losing money on X, so I decided to build Y...'"
+            },
+            {
+                title: "Business Impact",
+                type: "centered",
+                content: "Data Science is a cost-center until it generates revenue or saves money. Always link your model back to a KPI.",
+                notes: "Hiring managers love candidates who speak the language of business: ROI, Churn Rate, Conversion, ARPU."
+            },
+            {
+                title: "Coding Interview Prep",
+                bullets: [
+                    "LeetCode (Easy/Medium)",
+                    "Focus on Arrays and Strings",
+                    "Practice writing on a whiteboard/doc",
+                    "Explain your logic BEFORE typing"
+                ],
+                notes: "The goal isn't just the code; it's the problem-solving process. If you get stuck, say so and explain why."
+            },
+            {
+                title: "Questions for the Interviewer",
+                bullets: [
+                    "What does the data culture look like?",
+                    "How does the team handle data quality?",
+                    "What is the most successful project the team has done?",
+                    "How do you handle technical debt?"
+                ],
+                notes: "Questions show your seniority. Juniors ask about perks; Seniors ask about data quality and business strategy."
+            },
+            {
+                title: "Continuous Learning",
+                bullets: [
+                    "Stay updated on Generative AI/LLMs",
+                    "Contribute to Open Source",
+                    "Write technical blogs",
+                    "Attend Data meetups."
+                ],
+                notes: "The field moves fast. Show that you have a 'growth mindset'."
+            },
+            {
+                title: "Final Success Formula",
+                type: "centered",
+                content: "Preparation + Portfolio + Soft Skills = Job Offer",
+                notes: "You've got this. Practice out loud, refine your projects, and go in with confidence."
+            }
+        ];
+
+        // Fill remaining slides with summaries to reach 30 if needed, 
+        // but for this interactive version, we'll stick to the core 24 high-value slides.
+        
+        let currentSlide = 0;
+        const stage = document.getElementById('stage');
+        const counter = document.getElementById('slide-counter');
+        const progress = document.getElementById('progress-bar');
+        const activeNote = document.getElementById('active-note');
+
+        function initSlides() {
+            slideData.forEach((data, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = `slide ${index === 0 ? 'active' : ''}`;
+                
+                let content = `<h2>${data.title}</h2>`;
+                
+                if (data.type === 'title') {
+                    slideDiv.classList.add('centered');
+                    content = `<h1>${data.title}</h1><p class="subtitle">${data.subtitle.replace('\n', '<br>')}</p>`;
+                } else if (data.type === 'centered') {
+                    content += `<div style="flex-grow:1; display:flex; align-items:center; justify-content:center; text-align:center; font-size:1.8rem; font-weight:500;">${data.content}</div>`;
+                } else if (data.type === 'example') {
+                    content += `<div class="stat-card" style="margin-top:20px; font-family:monospace; white-space:pre-wrap; font-size:1.2rem;">${data.content}</div>`;
+                } else if (data.grid) {
+                    content += `<div class="content-grid">`;
+                    data.grid.forEach(item => {
+                        content += `<div class="stat-card"><h3>${item.h}</h3><p>${item.p}</p></div>`;
+                    });
+                    content += `</div>`;
+                } else if (data.bullets) {
+                    content += `<ul class="bullet-list">`;
+                    data.bullets.forEach(b => {
+                        content += `<li><i class="fa-solid fa-circle-check"></i> <span>${b}</span></li>`;
+                    });
+                    content += `</ul>`;
+                }
+
+                slideDiv.innerHTML = content;
+                stage.appendChild(slideDiv);
+            });
+            updateUI();
+        }
+
+        function updateUI() {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((s, i) => {
+                s.classList.remove('active', 'prev');
+                if (i === currentSlide) s.classList.add('active');
+                if (i < currentSlide) s.classList.add('prev');
+            });
+
+            counter.innerText = `${currentSlide + 1} / ${slideData.length}`;
+            progress.style.width = `${((currentSlide + 1) / slideData.length) * 100}%`;
+            
+            // Update Notes
+            activeNote.innerHTML = slideData[currentSlide].notes || "No notes for this slide.";
+        }
+
+        function nextSlide() {
+            if (currentSlide < slideData.length - 1) {
+                currentSlide++;
+                updateUI();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateUI();
+            }
+        }
+
+        function toggleNotes() {
+            document.getElementById('notes-panel').classList.toggle('open');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        window.onload = initSlides;
+    </script>
+</body>
+</html>
