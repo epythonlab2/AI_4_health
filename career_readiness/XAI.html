@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethical and Responsible AI Considerations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-gold: #fbbf24;
+            --accent-cyan: #22d3ee;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --slide-transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #020617;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .presentation-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            width: 95%;
+            max-width: 1200px;
+            height: 85vh;
+            max-height: 700px;
+            background-color: var(--bg-color);
+            padding: 40px;
+            border-radius: 24px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--slide-transition);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 10;
+        }
+
+        /* Responsive Grids */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            flex-grow: 1;
+            align-items: center;
+        }
+
+        .tiled-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        @media (max-width: 850px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .hide-mobile { display: none; }
+            .slide { padding: 25px; height: 90vh; }
+            .slide-title { font-size: 24px !important; }
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+        .title-main { font-size: clamp(32px, 6vw, 56px); line-height: 1.1; margin-bottom: 20px; font-weight: 700; }
+        .slide-title { font-size: 34px; color: var(--accent-gold); margin-bottom: 25px; border-left: 5px solid var(--accent-cyan); padding-left: 20px; font-weight: 700; }
+        .subtitle { color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 3px; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+        p { color: var(--text-secondary); line-height: 1.6; font-size: 18px; }
+        
+        /* Elements */
+        .card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); height: 100%; }
+        .icon-box { font-size: 28px; color: var(--accent-gold); margin-bottom: 15px; }
+        
+        .bullet-list { list-style: none; }
+        .bullet-list li {
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+        .bullet-list li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(8px);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: white;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: var(--accent-cyan); color: var(--bg-color); }
+        .nav-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+
+        .slide-indicator { font-size: 13px; font-weight: 700; color: var(--text-primary); min-width: 70px; text-align: center; }
+
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
+        }
+
+        #slide-menu {
+            position: fixed;
+            top: 75px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: none;
+            z-index: 101;
+            width: 280px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .menu-item {
+            padding: 12px 18px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .menu-item:hover { background: rgba(34, 211, 238, 0.1); color: var(--accent-cyan); }
+
+        .tag {
+            display: inline-block;
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-wrapper">
+    <!-- Slide 1: Title -->
+    <div class="slide active" id="s1">
+        <div style="margin: auto; text-align: center;">
+            <p class="subtitle">A Professional Presentation</p>
+            <h1 class="title-main">Ethical and Responsible<br><span style="color: var(--accent-gold);">AI Considerations</span></h1>
+            <div style="height: 4px; width: 60px; background: var(--accent-cyan); margin: 30px auto;"></div>
+            <p style="font-size: 22px; color: var(--text-primary); margin-bottom: 10px;">Prepared by <strong>Asibeh Tenager</strong></p>
+            <p style="margin-bottom: 30px;">AI Educator & Developer</p>
+            
+            <div class="card" style="display:inline-block; text-align:left; max-width: 500px;">
+                <h3 style="font-size: 16px; color: var(--accent-gold); margin-bottom: 10px;">Topics Covered:</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
+                    <span>• AI Ethics Fundamentals</span>
+                    <span>• Bias and Fairness</span>
+                    <span>• Responsible Principles</span>
+                    <span>• Privacy & Accountability</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: What is Ethical AI? -->
+    <div class="slide" id="s2">
+        <h2 class="slide-title">What is Ethical AI?</h2>
+        <div class="content-grid">
+            <div>
+                <p style="margin-bottom: 20px;">Refers to the development and use of AI in ways that respect <strong>human values, rights, and societal well-being.</strong></p>
+                <ul class="bullet-list">
+                    <li>Treat people fairly</li>
+                    <li>Protect privacy</li>
+                    <li>Avoid harm</li>
+                    <li>Remain accountable</li>
+                </ul>
+                <div class="card" style="margin-top: 30px; border-top: 4px solid var(--accent-cyan);">
+                    <h3>Key Idea</h3>
+                    <p>AI should benefit society while minimizing risks.</p>
+                </div>
+            </div>
+            <div class="hide-mobile" style="text-align: center;">
+                <i class="fas fa-scale-balanced" style="font-size: 180px; color: var(--accent-cyan); opacity: 0.2;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Why It Matters -->
+    <div class="slide" id="s3">
+        <h2 class="slide-title">Why Ethical AI Matters</h2>
+        <div class="tiled-grid">
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-brain"></i></div>
+                <h3>Critical Decisions</h3>
+                <p>Influences hiring, credit, healthcare, law enforcement, and education.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-user-shield"></i></div>
+                <h3>Social Protection</h3>
+                <p>Poorly designed AI causes discrimination and privacy violations.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-triangle-exclamation"></i></div>
+                <h3>Harm Prevention</h3>
+                <p>Prevents harmful decisions that can impact human lives permanently.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: AI Risks -->
+    <div class="slide" id="s4">
+        <h2 class="slide-title">Examples of AI Risks</h2>
+        <div class="content-grid">
+            <div class="card">
+                <ul class="bullet-list">
+                    <li>Algorithmic bias</li>
+                    <li>Data misuse</li>
+                    <li>Lack of transparency</li>
+                    <li>Automation errors</li>
+                    <li>Security vulnerabilities</li>
+                </ul>
+            </div>
+            <div>
+                <div class="tag">Strategy</div>
+                <h3>Responsible AI</h3>
+                <p>Aims to identify and reduce these systemic risks before they affect users.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Key Principles -->
+    <div class="slide" id="s5">
+        <h2 class="slide-title">Key Principles of Responsible AI</h2>
+        <div class="tiled-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="card"><h3>Fairness</h3></div>
+            <div class="card"><h3>Transparency</h3></div>
+            <div class="card"><h3>Accountability</h3></div>
+            <div class="card"><h3>Privacy</h3></div>
+            <div class="card"><h3>Safety</h3></div>
+            <div class="card"><h3>Oversight</h3></div>
+        </div>
+        <p style="margin-top: 30px; text-align: center; font-style: italic;">These principles guide ethical AI development frameworks.</p>
+    </div>
+
+    <!-- Slide 6: Fairness -->
+    <div class="slide" id="s6">
+        <h2 class="slide-title">Fairness in AI</h2>
+        <div class="content-grid">
+            <div>
+                <p>AI systems should treat all individuals and groups equally.</p>
+                <h3 style="margin: 20px 0 10px;">Challenges:</h3>
+                <ul class="bullet-list">
+                    <li>Biased training data</li>
+                    <li>Unbalanced datasets</li>
+                    <li>Historical discrimination</li>
+                </ul>
+            </div>
+            <div class="card" style="background: rgba(251, 191, 36, 0.1);">
+                <h3>Example</h3>
+                <p>A hiring algorithm that favors one gender over another based on historical job data.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Sources of Bias -->
+    <div class="slide" id="s7">
+        <h2 class="slide-title">Sources of Bias in AI</h2>
+        <div class="tiled-grid">
+            <div class="card"><strong>Data Collection</strong><p>Non-representative samples.</p></div>
+            <div class="card"><strong>Data Labeling</strong><p>Human prejudice in tags.</p></div>
+            <div class="card"><strong>Feature Selection</strong><p>Proxies for race or gender.</p></div>
+            <div class="card"><strong>Model Training</strong><p>Optimizing for flawed goals.</p></div>
+        </div>
+        <div class="card" style="margin-top: 30px;">
+            <p><strong>Note:</strong> If historical data is biased, the model will learn and reproduce it.</p>
+        </div>
+    </div>
+
+    <!-- Slide 8: Mitigating Bias -->
+    <div class="slide" id="s8">
+        <h2 class="slide-title">Mitigating Bias</h2>
+        <div class="content-grid">
+            <ul class="bullet-list">
+                <li>Use diverse datasets</li>
+                <li>Audit models regularly</li>
+                <li>Apply fairness metrics</li>
+                <li>Use bias detection tools</li>
+            </ul>
+            <div style="text-align: center;">
+                <h3 style="color: var(--accent-cyan); font-size: 40px;">GOAL</h3>
+                <p>Equitable and inclusive models.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Transparency -->
+    <div class="slide" id="s9">
+        <h2 class="slide-title">Transparency in AI</h2>
+        <div class="content-grid">
+            <div>
+                <p>Users should understand:</p>
+                <ul class="bullet-list">
+                    <li>How the system works</li>
+                    <li>What data is used</li>
+                    <li>How decisions are made</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-eye-slash"></i></div>
+                <h3>The "Black-Box" Problem</h3>
+                <p>Opaque models make it difficult to explain or contest outcomes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: XAI -->
+    <div class="slide" id="s10">
+        <h2 class="slide-title">Explainable AI (XAI)</h2>
+        <p style="margin-bottom: 20px;">Techniques that help make complex models understandable to humans.</p>
+        <div class="tiled-grid">
+            <div class="card"><h3>Feature Importance</h3><p>Which variables mattered?</p></div>
+            <div class="card"><h3>SHAP Values</h3><p>Contribution scores per feature.</p></div>
+            <div class="card"><h3>LIME Explanations</h3><p>Local surrogate modeling.</p></div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Accountability -->
+    <div class="slide" id="s11">
+        <h2 class="slide-title">Accountability in AI</h2>
+        <div class="content-grid">
+            <div>
+                <p>Organizations must take responsibility for AI decisions.</p>
+                <h3 style="margin-top:20px;">Key Questions:</h3>
+                <p>• Who built the model?<br>• Who approved it?<br>• Who monitors its impact?</p>
+            </div>
+            <div class="card" style="border-left: 5px solid var(--accent-gold);">
+                <p>AI systems should not operate without human oversight.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Privacy -->
+    <div class="slide" id="s12">
+        <h2 class="slide-title">Privacy and Data Protection</h2>
+        <div class="content-grid">
+            <div>
+                <ul class="bullet-list">
+                    <li>Personal information</li>
+                    <li>Sensitive data</li>
+                    <li>User identities</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Techniques</h3>
+                <p>Data anonymization, encryption, and secure storage protocols.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Data Governance -->
+    <div class="slide" id="s13">
+        <h2 class="slide-title">Data Governance</h2>
+        <div class="tiled-grid">
+            <div class="card"><h3>Quality</h3><p>Ensures high-quality datasets.</p></div>
+            <div class="card"><h3>Ethics</h3><p>Ethical data collection methods.</p></div>
+            <div class="card"><h3>Compliance</h3><p>Legal standards (GDPR, etc.).</p></div>
+        </div>
+        <p style="margin-top: 30px; color: var(--accent-gold);">Poor governance leads to biased or unreliable models.</p>
+    </div>
+
+    <!-- Slide 14: Security -->
+    <div class="slide" id="s14">
+        <h2 class="slide-title">Security Risks in AI</h2>
+        <div class="content-grid">
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-shield-virus"></i></div>
+                <h3>Common Attacks</h3>
+                <p>• Data Poisoning<br>• Model Manipulation<br>• Adversarial Attacks</p>
+            </div>
+            <p>Responsible AI requires proactive security practices to defend against malicious interference.</p>
+        </div>
+    </div>
+
+    <!-- Slide 15: Oversight -->
+    <div class="slide" id="s15">
+        <h2 class="slide-title">Human Oversight</h2>
+        <div class="content-grid">
+            <div>
+                <p>AI should support human decision-making, <strong>not replace it.</strong></p>
+            </div>
+            <div class="card">
+                <ul class="bullet-list">
+                    <li>Detecting errors</li>
+                    <li>Addressing ethics</li>
+                    <li>Final accountability</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 16: High-Stakes -->
+    <div class="slide" id="s16">
+        <h2 class="slide-title">AI in High-Stakes Applications</h2>
+        <div class="tiled-grid">
+            <div class="card"><h3>Healthcare</h3></div>
+            <div class="card"><h3>Autonomous Vehicles</h3></div>
+            <div class="card"><h3>Finance</h3></div>
+            <div class="card"><h3>Criminal Justice</h3></div>
+        </div>
+        <div class="card" style="margin-top: 20px; border: 1px solid var(--accent-gold);">
+            <p><strong>Impact:</strong> Errors in these areas can have permanent, life-altering consequences.</p>
+        </div>
+    </div>
+
+    <!-- Slide 17: Industry -->
+    <div class="slide" id="s17">
+        <h2 class="slide-title">Responsible AI in Industry</h2>
+        <div class="content-grid">
+            <div>
+                <p>Becoming a standard business requirement.</p>
+                <ul class="bullet-list">
+                    <li>Ethics review boards</li>
+                    <li>Model audits</li>
+                    <li>Bias monitoring</li>
+                </ul>
+            </div>
+            <div class="hide-mobile" style="text-align: center;">
+                <i class="fas fa-building-shield" style="font-size: 150px; opacity: 0.1;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 18: Professionals -->
+    <div class="slide" id="s18">
+        <h2 class="slide-title">Role of AI Professionals</h2>
+        <div class="tiled-grid">
+            <div class="card"><h3>Collection</h3></div>
+            <div class="card"><h3>Design</h3></div>
+            <div class="card"><h3>Testing</h3></div>
+            <div class="card"><h3>Deployment</h3></div>
+        </div>
+        <p style="margin-top: 30px; text-align: center; color: var(--accent-cyan);">Responsibility belongs to everyone in the lifecycle.</p>
+    </div>
+
+    <!-- Slide 19: Regulation -->
+    <div class="slide" id="s19">
+        <h2 class="slide-title">AI Regulations & Governance</h2>
+        <div class="content-grid">
+            <div class="card">
+                <h3>Global Standards</h3>
+                <p>Governments are introducing policies for privacy, transparency, and accountability.</p>
+            </div>
+            <p>Regulation ensures that technology serves society safely and ethically.</p>
+        </div>
+    </div>
+
+    <!-- Slide 20: Workflow -->
+    <div class="slide" id="s20">
+        <h2 class="slide-title">Ethical AI Development Workflow</h2>
+        <div class="bullet-list" style="margin: auto;">
+            <li>1. Ethical data sourcing</li>
+            <li>2. Fair model training</li>
+            <li>3. Model evaluation for bias</li>
+            <li>4. Continuous live monitoring</li>
+        </div>
+    </div>
+
+    <!-- Slide 21: Challenges -->
+    <div class="slide" id="s21">
+        <h2 class="slide-title">Real-World Ethical Challenges</h2>
+        <div class="tiled-grid">
+            <div class="card"><h3>Facial Recognition</h3><p>Addressing persistent bias.</p></div>
+            <div class="card"><h3>Credit Scoring</h3><p>Equitable lending models.</p></div>
+            <div class="card"><h3>Data Privacy</h3><p>Consent and scraping concerns.</p></div>
+        </div>
+    </div>
+
+    <!-- Slide 22: Best Practices -->
+    <div class="slide" id="s22">
+        <h2 class="slide-title">Best Practices</h2>
+        <ul class="bullet-list" style="max-width: 600px; margin: auto;">
+            <li>Audit datasets regularly</li>
+            <li>Monitor model performance live</li>
+            <li>Document all design decisions</li>
+            <li>Encourage radical transparency</li>
+        </ul>
+    </div>
+
+    <!-- Slide 23: Future -->
+    <div class="slide" id="s23">
+        <h2 class="slide-title">Future of Ethical AI</h2>
+        <div class="content-grid">
+            <div class="card">
+                <h3>Predictions</h3>
+                <p>• Increased regulation<br>• Higher transparency demands<br>• Trust as a competitive edge</p>
+            </div>
+            <p>Organizations must prioritize trustworthy AI systems today.</p>
+        </div>
+    </div>
+
+    <!-- Slide 24: Takeaways -->
+    <div class="slide" id="s24">
+        <h2 class="slide-title">Key Takeaways</h2>
+        <div class="tiled-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="card" style="text-align:center;">Fairness</div>
+            <div class="card" style="text-align:center;">Transparency</div>
+            <div class="card" style="text-align:center;">Privacy</div>
+            <div class="card" style="text-align:center;">Accountability</div>
+            <div class="card" style="text-align:center;">Oversight</div>
+            <div class="card" style="text-align:center; background: var(--accent-cyan); color: #000;">Ethics</div>
+        </div>
+    </div>
+
+    <!-- Slide 25: Final -->
+    <div class="slide" id="s25">
+        <div style="margin: auto; text-align: center; max-width: 800px;">
+            <i class="fas fa-quote-left" style="font-size: 50px; color: var(--accent-cyan); opacity: 0.3; margin-bottom: 20px;"></i>
+            <h2 style="font-size: 32px; margin-bottom: 20px;">“Ethical AI is not optional — it is essential for trustworthy technology.”</h2>
+            <div style="height: 2px; width: 40px; background: var(--accent-gold); margin: 20px auto;"></div>
+            <p>AI impact depends on responsible design and human-centric use.</p>
+            <p style="margin-top: 40px; color: var(--accent-gold); font-weight: 700;">THANK YOU</p>
+        </div>
+    </div>
+</div>
+
+<button class="menu-btn" onclick="toggleMenu()">Outline <i class="fas fa-list-ul"></i></button>
+<div id="slide-menu"></div>
+
+<div class="nav-controls">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)"><i class="fas fa-arrow-left"></i></button>
+    <div class="slide-indicator" id="progress">1 / 25</div>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)"><i class="fas fa-arrow-right"></i></button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const progress = document.getElementById('progress');
+    const menu = document.getElementById('slide-menu');
+
+    // Create Navigation Menu
+    slides.forEach((slide, index) => {
+        const title = slide.querySelector('.slide-title')?.innerText || slide.querySelector('.title-main')?.innerText || `Slide ${index + 1}`;
+        const item = document.createElement('div');
+        item.className = 'menu-item';
+        item.innerText = `${index + 1}. ${title.split('\n')[0]}`;
+        item.onclick = () => { goToSlide(index); toggleMenu(); };
+        menu.appendChild(item);
+    });
+
+    function updateUI() {
+        slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+        progress.innerText = `${currentSlide + 1} / ${slides.length}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 0;
+        document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+    }
+
+    function changeSlide(dir) {
+        currentSlide = Math.min(Math.max(0, currentSlide + dir), slides.length - 1);
+        updateUI();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateUI();
+    }
+
+    function toggleMenu() {
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+        if (e.key === 'Escape') menu.style.display = 'none';
+    });
+
+    // Simple Swipe
+    let startX = 0;
+    document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    document.addEventListener('touchend', e => {
+        let diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+    });
+
+    updateUI();
+</script>
+
+</body>
+</html>
