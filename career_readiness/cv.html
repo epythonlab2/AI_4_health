@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Write a Winning CV for AI / ML / Data Roles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-gold: #fbbf24;
+            --accent-cyan: #22d3ee;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --slide-transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #020617;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .presentation-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            width: 95%;
+            max-width: 1200px;
+            height: 85vh;
+            max-height: 700px;
+            background-color: var(--bg-color);
+            padding: 40px;
+            border-radius: 24px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--slide-transition);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+            z-index: 10;
+        }
+
+        /* Layout Grids */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            flex-grow: 1;
+            align-items: center;
+        }
+
+        .tiled-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        @media (max-width: 850px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .hide-mobile { display: none; }
+            .slide { padding: 25px; height: 90vh; }
+            .slide-title { font-size: 24px !important; }
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+        .title-main { font-size: clamp(32px, 6vw, 52px); line-height: 1.1; margin-bottom: 20px; font-weight: 700; }
+        .slide-title { font-size: 34px; color: var(--accent-gold); margin-bottom: 25px; border-left: 5px solid var(--accent-cyan); padding-left: 20px; font-weight: 700; }
+        .subtitle { color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 3px; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+        p { color: var(--text-secondary); line-height: 1.6; font-size: 18px; }
+        
+        /* Elements */
+        .card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); height: 100%; }
+        .icon-box { font-size: 28px; color: var(--accent-gold); margin-bottom: 15px; }
+        
+        .bullet-list { list-style: none; }
+        .bullet-list li {
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+        .bullet-list li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        /* Navigation Controls */
+        .nav-controls {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(8px);
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: white;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: var(--accent-cyan); color: var(--bg-color); }
+        .nav-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+
+        .slide-indicator { font-size: 13px; font-weight: 700; color: var(--text-primary); min-width: 70px; text-align: center; }
+
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
+        }
+
+        #slide-menu {
+            position: fixed;
+            top: 75px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: none;
+            z-index: 101;
+            width: 280px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .menu-item {
+            padding: 12px 18px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .menu-item:hover { background: rgba(34, 211, 238, 0.1); color: var(--accent-cyan); }
+
+        .tag {
+            display: inline-block;
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-wrapper">
+    <!-- Slide 1: Title -->
+    <div class="slide active" id="s1">
+        <div style="margin: auto; text-align: center;">
+            <p class="subtitle">Career Development Workshop</p>
+            <h1 class="title-main">How to Write a <span style="color: var(--accent-gold);">Winning CV</span><br>for AI / ML / Data Roles</h1>
+            <div style="height: 4px; width: 60px; background: var(--accent-cyan); margin: 30px auto;"></div>
+            <p style="font-size: 22px; color: var(--text-primary); margin-bottom: 10px;">Prepared by <strong>Asibeh Tenager</strong></p>
+            <p style="margin-bottom: 30px;">AI Educator & Developer</p>
+            
+            <div class="card" style="display:inline-block; text-align:left; max-width: 500px;">
+                <h3 style="font-size: 16px; color: var(--accent-gold); margin-bottom: 10px;">Topics:</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
+                    <span>• Building a strong CV</span>
+                    <span>• Highlighting projects</span>
+                    <span>• Presenting technical skills</span>
+                    <span>• Standing out in interviews</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Why CV Quality Matters -->
+    <div class="slide" id="s2">
+        <h2 class="slide-title">Why CV Quality Matters</h2>
+        <div class="content-grid">
+            <div>
+                <p style="margin-bottom: 20px;">A CV is the <strong>first filter</strong> in hiring. Recruiters often spend <strong>less than 10 seconds</strong> reviewing a resume.</p>
+                <h3 style="margin-bottom: 15px;">Must-show elements:</h3>
+                <ul class="bullet-list">
+                    <li>Technical expertise</li>
+                    <li>Real-world projects</li>
+                    <li>Measurable impact</li>
+                </ul>
+            </div>
+            <div class="card" style="border-top: 4px solid var(--accent-cyan);">
+                <h3>Key Takeaway</h3>
+                <p>A strong CV determines whether you get an interview, not just whether you have the skills.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: What Recruiters Look For -->
+    <div class="slide" id="s3">
+        <h2 class="slide-title">What Recruiters Look For</h2>
+        <div class="tiled-grid">
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-code"></i></div>
+                <h3>Technical Core</h3>
+                <p>Python, SQL, and Machine Learning knowledge.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                <h3>Business Value</h3>
+                <p>Real projects and measurable business impact.</p>
+            </div>
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-comments"></i></div>
+                <h3>Soft Skills</h3>
+                <p>Clear communication and storytelling with data.</p>
+            </div>
+        </div>
+        <p style="margin-top: 25px; text-align: center; font-style: italic; color: var(--accent-gold);">Winning CVs highlight value, not just tasks.</p>
+    </div>
+
+    <!-- Slide 4: Structure -->
+    <div class="slide" id="s4">
+        <h2 class="slide-title">Structure of a Winning Data CV</h2>
+        <div class="content-grid">
+            <div class="card">
+                <ol style="color: var(--text-primary); padding-left: 20px; line-height: 2.2;">
+                    <li>Header & Contact Info</li>
+                    <li>Professional Summary</li>
+                    <li>Technical Skills</li>
+                    <li>Projects</li>
+                </ol>
+            </div>
+            <div class="card">
+                <ol start="5" style="color: var(--text-primary); padding-left: 20px; line-height: 2.2;">
+                    <li>Work Experience</li>
+                    <li>Education</li>
+                    <li>Certifications</li>
+                    <li>GitHub / Portfolio</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Clean Design -->
+    <div class="slide" id="s5">
+        <h2 class="slide-title">Clean and Professional Design</h2>
+        <div class="tiled-grid">
+            <div class="card">
+                <h3>Length</h3>
+                <p>• 1 page (entry level)<br>• 2 pages (experienced)</p>
+            </div>
+            <div class="card">
+                <h3>Typography</h3>
+                <p>Use clean fonts: Arial, Calibri, or Helvetica.</p>
+            </div>
+            <div class="card">
+                <h3>Tips</h3>
+                <p>Use bullet points, avoid long paragraphs, and keep spacing consistent.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Professional Summary -->
+    <div class="slide" id="s6">
+        <h2 class="slide-title">Writing a Strong Summary</h2>
+        <div class="content-grid">
+            <div>
+                <p>Your summary should answer:</p>
+                <ul class="bullet-list">
+                    <li>Who you are</li>
+                    <li>What skills you have</li>
+                    <li>What problems you solve</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="tag">Example</div>
+                <p><em>"Machine Learning Engineer with experience building predictive models and data pipelines using Python and Scikit-learn."</em></p>
+                <p style="margin-top:15px; font-size:14px; color: var(--accent-cyan);">Keep it 3–4 lines only.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Weak vs Strong -->
+    <div class="slide" id="s7">
+        <h2 class="slide-title">Weak vs. Strong Summary</h2>
+        <div class="tiled-grid">
+            <div class="card" style="border-left: 5px solid #ef4444;">
+                <h3 style="color: #fca5a5;">Weak</h3>
+                <p>"Passionate individual seeking data science opportunities."</p>
+            </div>
+            <div class="card" style="border-left: 5px solid #10b981;">
+                <h3 style="color: #6ee7b7;">Strong</h3>
+                <p>"Data scientist experienced in predictive modeling, Python, and SQL with projects in fraud detection and churn prediction."</p>
+            </div>
+        </div>
+        <p style="margin-top: 25px; text-align: center;"><strong>Key Takeaway:</strong> Be specific and results-focused.</p>
+    </div>
+
+    <!-- Slide 8: Technical Skills -->
+    <div class="slide" id="s8">
+        <h2 class="slide-title">Organizing Technical Skills</h2>
+        <div class="tiled-grid">
+            <div class="card">
+                <h3 style="color: var(--accent-cyan);">Programming</h3>
+                <p>Python, SQL, R</p>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--accent-cyan);">Analysis</h3>
+                <p>Pandas, NumPy</p>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--accent-cyan);">ML</h3>
+                <p>Scikit-learn, TensorFlow</p>
+            </div>
+            <div class="card">
+                <h3 style="color: var(--accent-cyan);">Visualization</h3>
+                <p>Tableau, Power BI</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Skill Overloading -->
+    <div class="slide" id="s9">
+        <h2 class="slide-title">Avoid Skill Overloading</h2>
+        <div class="content-grid">
+            <div class="card">
+                <h3 style="color: #ef4444;">Bad Example</h3>
+                <p style="font-size: 14px;">Python, R, Java, C++, MATLAB, Spark, Hadoop, Tableau, Power BI, TensorFlow, PyTorch, SAS, Scala, Ruby...</p>
+            </div>
+            <div>
+                <h3>Better Approach</h3>
+                <p>List only the skills you can <strong>explain confidently</strong> in a technical interview. Focus on the core stack for the role.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Why Projects Matter -->
+    <div class="slide" id="s10">
+        <h2 class="slide-title">Why Projects Matter</h2>
+        <div class="content-grid">
+            <div>
+                <p>Projects prove that you can:</p>
+                <ul class="bullet-list">
+                    <li>Apply Machine Learning</li>
+                    <li>Work with real-world data</li>
+                    <li>Solve complex problems</li>
+                </ul>
+            </div>
+            <div class="card" style="background: rgba(34, 211, 238, 0.05);">
+                <p>For many entry-level candidates, projects are the <strong>most important</strong> section of the CV.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Presenting Projects -->
+    <div class="slide" id="s11">
+        <h2 class="slide-title">How to Present Projects</h2>
+        <div class="tiled-grid">
+            <div class="card"><h3>Problem</h3><p>What were you solving?</p></div>
+            <div class="card"><h3>Tools</h3><p>Tech stack used.</p></div>
+            <div class="card"><h3>Approach</h3><p>How did you solve it?</p></div>
+            <div class="card"><h3>Results</h3><p>What was the outcome?</p></div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Example Project -->
+    <div class="slide" id="s12">
+        <h2 class="slide-title">Example Project Description</h2>
+        <div class="card">
+            <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">Fraud Detection System</h3>
+            <p><strong>Tools:</strong> Python, XGBoost, Pandas</p>
+            <p style="margin-top:10px;">Built a machine learning model to detect fraudulent financial transactions by analyzing historical patterns.</p>
+            <p style="margin-top:10px; color: var(--accent-gold);"><strong>Result:</strong> Improved detection accuracy by 22% compared to the previous baseline.</p>
+        </div>
+    </div>
+
+    <!-- Slide 13: Business Impact -->
+    <div class="slide" id="s13">
+        <h2 class="slide-title">Show Business Impact</h2>
+        <div class="content-grid">
+            <div class="card">
+                <h3>Draft</h3>
+                <p>"Built a sales analytics dashboard."</p>
+            </div>
+            <div class="card" style="border-left: 5px solid var(--accent-cyan);">
+                <h3>Impact Focus</h3>
+                <p>"Built a sales analytics dashboard that helped identify underperforming regions, improving marketing strategy decisions."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Quantify Achievements -->
+    <div class="slide" id="s14">
+        <h2 class="slide-title">Quantify Achievements</h2>
+        <p style="margin-bottom: 25px;">Numbers strengthen your claims and make them believable.</p>
+        <div class="tiled-grid">
+            <div class="card">
+                <h2 style="color: var(--accent-gold);">88%</h2>
+                <p>Accuracy improvement from 72%.</p>
+            </div>
+            <div class="card">
+                <h2 style="color: var(--accent-gold);">2M</h2>
+                <p>Records analyzed for insights.</p>
+            </div>
+            <div class="card">
+                <h2 style="color: var(--accent-gold);">40%</h2>
+                <p>Reduced processing time.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Work Experience -->
+    <div class="slide" id="s15">
+        <h2 class="slide-title">Writing Work Experience</h2>
+        <div class="card" style="margin-bottom: 30px;">
+            <h3 style="color: var(--accent-cyan); margin-bottom: 10px;">The Formula</h3>
+            <p style="font-size: 24px;">Action + Task + Tool + Result</p>
+        </div>
+        <p><strong>Example:</strong> "Developed a recommendation model using Python and collaborative filtering, improving product recommendation accuracy by 15%."</p>
+    </div>
+
+    <!-- Slide 16: Action Verbs -->
+    <div class="slide" id="s16">
+        <h2 class="slide-title">Powerful Action Verbs</h2>
+        <div class="tiled-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="card" style="text-align:center;">Built</div>
+            <div class="card" style="text-align:center;">Developed</div>
+            <div class="card" style="text-align:center;">Designed</div>
+            <div class="card" style="text-align:center;">Optimized</div>
+            <div class="card" style="text-align:center;">Analyzed</div>
+            <div class="card" style="text-align:center;">Automated</div>
+            <div class="card" style="text-align:center;">Implemented</div>
+            <div class="card" style="text-align:center;">Led</div>
+        </div>
+        <p style="margin-top: 30px; text-align: center; color: #ef4444;">Avoid weak phrases like <strong>"Responsible for..."</strong></p>
+    </div>
+
+    <!-- Slide 17: Education -->
+    <div class="slide" id="s17">
+        <h2 class="slide-title">Education Section</h2>
+        <div class="card">
+            <h3>BS in Computer Science</h3>
+            <p>University Name | Year</p>
+            <div style="margin-top:15px; border-top: 1px solid var(--border-color); padding-top: 10px;">
+                <p><strong>Optional Additions:</strong></p>
+                <p>• Relevant Coursework<br>• Thesis Project Details</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 18: Certifications -->
+    <div class="slide" id="s18">
+        <h2 class="slide-title">Certifications</h2>
+        <div class="content-grid">
+            <div class="card">
+                <ul class="bullet-list">
+                    <li>ML Specialization</li>
+                    <li>Google Data Analytics</li>
+                    <li>Deep Learning courses</li>
+                </ul>
+            </div>
+            <div class="card" style="background: rgba(251, 191, 36, 0.05);">
+                <p><strong>Pro Tip:</strong> Projects often matter more than certificates. Don't let certificates crowd out your actual work.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 19: GitHub Portfolio -->
+    <div class="slide" id="s19">
+        <h2 class="slide-title">Importance of GitHub</h2>
+        <div class="content-grid">
+            <div>
+                <p>Include links to:</p>
+                <ul class="bullet-list">
+                    <li>GitHub</li>
+                    <li>Kaggle</li>
+                    <li>Portfolio Website</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Repositories should have:</h3>
+                <p>• Clear README<br>• Project explanation<br>• Dataset description<br>• Visual results</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 20: Common Mistakes -->
+    <div class="slide" id="s20">
+        <h2 class="slide-title">Common CV Mistakes</h2>
+        <div class="tiled-grid">
+            <div class="card">No project explanations</div>
+            <div class="card">Tool overloading</div>
+            <div class="card">Generic summaries</div>
+            <div class="card">Poor formatting</div>
+            <div class="card">No measurable results</div>
+        </div>
+    </div>
+
+    <!-- Slide 21: Tailoring -->
+    <div class="slide" id="s21">
+        <h2 class="slide-title">Tailoring for Data Roles</h2>
+        <div class="tiled-grid">
+            <div class="card">
+                <h3>Data Analyst</h3>
+                <p>SQL, Visualization, Business Insights</p>
+            </div>
+            <div class="card">
+                <h3>Data Scientist</h3>
+                <p>Machine Learning, Statistics, Modeling</p>
+            </div>
+            <div class="card">
+                <h3>ML Engineer</h3>
+                <p>Model Deployment, APIs, Software Engineering</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 22: Standing Out -->
+    <div class="slide" id="s22">
+        <h2 class="slide-title">Making Your CV Stand Out</h2>
+        <ul class="bullet-list" style="max-width: 600px; margin: auto;">
+            <li>Unique, non-generic projects</li>
+            <li>Use of real-world messy datasets</li>
+            <li>Clean, well-documented GitHub</li>
+            <li>Evidence of strong impact metrics</li>
+        </ul>
+    </div>
+
+    <!-- Slide 23: Checklist -->
+    <div class="slide" id="s23">
+        <h2 class="slide-title">Final CV Review Checklist</h2>
+        <div class="content-grid">
+            <div class="card">
+                <ul class="bullet-list">
+                    <li>Clear Summary</li>
+                    <li>Organized Skills</li>
+                    <li>Strong Projects</li>
+                </ul>
+            </div>
+            <div class="card">
+                <ul class="bullet-list">
+                    <li>Quantified Results</li>
+                    <li>Clean Formatting</li>
+                    <li>No Typos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 24: Winning CV Traits -->
+    <div class="slide" id="s24">
+        <h2 class="slide-title">What Makes a Winning CV</h2>
+        <div style="text-align: center; margin-top: 40px;">
+            <p style="font-size: 24px; color: var(--text-primary); margin-bottom: 20px;">Technical Expertise + Problem Solving + Communication</p>
+            <div class="card" style="display: inline-block;">
+                <p>A CV should tell your professional story, not just list your tools.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 25: Final Advice -->
+    <div class="slide" id="s25">
+        <div style="margin: auto; text-align: center; max-width: 800px;">
+            <i class="fas fa-quote-left" style="font-size: 50px; color: var(--accent-cyan); opacity: 0.3; margin-bottom: 20px;"></i>
+            <h2 style="font-size: 32px; margin-bottom: 20px;">"Your CV should show how you turn data into insight."</h2>
+            <div style="height: 2px; width: 40px; background: var(--accent-gold); margin: 20px auto;"></div>
+            <p style="margin-bottom: 30px;">Build projects, communicate results, and keep improving.</p>
+            <p style="color: var(--accent-gold); font-weight: 700; font-size: 24px;">GOOD LUCK!</p>
+        </div>
+    </div>
+</div>
+
+<button class="menu-btn" onclick="toggleMenu()">Outline <i class="fas fa-list-ul"></i></button>
+<div id="slide-menu"></div>
+
+<div class="nav-controls">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)"><i class="fas fa-arrow-left"></i></button>
+    <div class="slide-indicator" id="progress">1 / 25</div>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)"><i class="fas fa-arrow-right"></i></button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const progress = document.getElementById('progress');
+    const menu = document.getElementById('slide-menu');
+
+    // Generate Outline Menu
+    slides.forEach((slide, index) => {
+        const title = slide.querySelector('.slide-title')?.innerText || slide.querySelector('.title-main')?.innerText || `Slide ${index + 1}`;
+        const item = document.createElement('div');
+        item.className = 'menu-item';
+        item.innerText = `${index + 1}. ${title.split('\n')[0]}`;
+        item.onclick = () => { goToSlide(index); toggleMenu(); };
+        menu.appendChild(item);
+    });
+
+    function updateUI() {
+        slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+        progress.innerText = `${currentSlide + 1} / ${slides.length}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 0;
+        document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+    }
+
+    function changeSlide(dir) {
+        currentSlide = Math.min(Math.max(0, currentSlide + dir), slides.length - 1);
+        updateUI();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateUI();
+    }
+
+    function toggleMenu() {
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+        if (e.key === 'Escape') menu.style.display = 'none';
+    });
+
+    // Touch swipe support
+    let startX = 0;
+    document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    document.addEventListener('touchend', e => {
+        let diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+    });
+
+    updateUI();
+</script>
+
+</body>
+</html>
